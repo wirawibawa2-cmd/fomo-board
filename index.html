@@ -1480,5 +1480,5 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
 poll();setInterval(()=>{if(!document.hidden)poll()},POLL_MS);
 
 </script>
-<script>/* auto-refresh: reload when a newer board is published */(function(){if(location.protocol==='file:')return;const g=d=>{const m=d.match(/<script id="snapshot"[^>]*>([\\s\\S]*?)<\\/script>/);return m?m[1]:''};const cur=(document.getElementById('snapshot')||{}).textContent||'';setInterval(()=>{fetch(location.pathname+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(d=>{const s=g(d);if(s&&s.trim()!==cur.trim())location.reload()}).catch(()=>{})},60000)})();</script></body>
+<script>/* auto-refresh: reload when a newer board is published */(function(){if(location.protocol==='file:')return;const g=d=>{const m=d.match(/<script id="snapshot"[^>]*>([\s\S]*?)<\/script>/);return m?m[1]:''};const cur=(document.getElementById('snapshot')||{}).textContent||'';setInterval(()=>{fetch(location.pathname+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.text():'').then(d=>{const s=g(d);if(s&&s.trim()!==cur.trim())location.reload()}).catch(()=>{})},60000)})();</script></body>
 </html>
