@@ -682,7 +682,7 @@ img.fomo-real,
 
 <div class="notice">
   <div class="n1"><b>STATIC SNAPSHOT:</b> trading state (pot, positions, fills, scan history) is embedded from Kai's box <b id="snapLabel"></b>. It does <b>not</b> update live. Panels tagged <span class="tag snap">SNAP</span> are snapshot; <span class="tag live">LIVE</span> = fetched from DexScreener / GeckoTerminal in your browser every 15s.</div>
-  <div class="n2"><b>READ-ONLY.</b> Trades happen via Kai on Fomo. This page never trades and has no wallet or key inputs. The only input is a public token contract address to watch. Agent markers, quotes, node graph, radar and the roaming angular centipede are decoration <span class="tag deco">DECO</span>.</div>
+  <div class="n2"><b>READ-ONLY.</b> Trades happen via Kai on Fomo. This page never trades and has no wallet or key inputs. The only input is a public token contract address to watch. Agent markers, quotes, node graph, radar and the roaming thin centipede are decoration <span class="tag deco">DECO</span>.</div>
 </div>
 
 <section class="row" id="toprow">
@@ -783,7 +783,7 @@ img.fomo-real,
   <div class="panel pink" id="room"><h3><span class="ic" data-ic="server"></span>SERVER ROOM<span class="tag deco">DECO</span></h3>
     <div id="pxroom"><canvas id="pxc" width="240" height="178"></canvas><svg id="roomsvg" viewBox="0 0 720 534" xmlns="http://www.w3.org/2000/svg"></svg></div>
     <div class="legend" id="legend"></div>
-    <div class="small decoNote"><span class="tag deco">DECO</span> Agent bay + standby lounge are schematic decoration, not trades. Angular centipede is deco. <span class="tag snap">SNAP</span> RESERVE is Fomo cash set aside (do not touch), read-only.</div>
+    <div class="small decoNote"><span class="tag deco">DECO</span> Agent bay + standby lounge are schematic decoration, not trades. Thin S-curve centipede is deco. <span class="tag snap">SNAP</span> RESERVE is Fomo cash set aside (do not touch), read-only.</div>
   </div>
 
   <div class="panel pink" id="p-runner"><h3><span class="ic" data-ic="rocket"></span>TOP RUNNER<span class="tag live">LIVE</span></h3>
@@ -1071,7 +1071,7 @@ const PW=240,PH=178,PS=3;
 /* CHAOS MODE: room skins itself red/orange when the snapshot says mode == 'chaos' (display only). Not chaos => nothing below changes. */
 const pxChaos=()=>{try{return SNAP&&SNAP.mode==='chaos'}catch(e){return false}};
 /* REST ROOM: trading paused (or frozen) and not in chaos mode -> bots rest/play in the lounge, work room idles. ?rest=1 / ?rest=0 force the state for previews only. */
-const pxPaused=()=>{try{if(/[?&]rest=0/.test(location.search))return false;if(/[?&]rest=1/.test(location.search))return true;return !!SNAP&&SNAP.mode!=='chaos'&&!!(SNAP.trading_paused||SNAP.trading_frozen)}catch(e){return false}};
+const pxPaused=()=>{try{if(/[?&]rest=0/.test(location.search))return false;if(/[?&]rest=1/.test(location.search))return true;/* preview-numora-serious: default calm standby lounge motion */if(document.body&&document.body.getAttribute('data-preview')==='numora-serious')return true;return !!SNAP&&SNAP.mode!=='chaos'&&!!(SNAP.trading_paused||SNAP.trading_frozen)}catch(e){return false}};
 /* ---------- BOT LOOK TABLE + the ONE swappable sprite function ---------- */
 const BOTS={
  KAI:{col:'#1fd17a',r:10,shape:'circle'},
@@ -1734,9 +1734,9 @@ function startLounge(){
   motion();window.__lounge={frame:frame,layout:layout};
 }
 
-/* ---------- page-roaming angular robot centipede (DECO, read-only) — option 3 ---------- */
+/* ---------- page-roaming thin S-curve centipede (DECO, read-only) — option 1, elongated ---------- */
 (function(){
-  const PS=7.2,reduced=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const PS=6.4,reduced=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
   const cv=document.createElement('canvas');cv.id='centipede';cv.setAttribute('aria-hidden','true');cv.setAttribute('data-deco','centipede');
   document.body.appendChild(cv);const g=cv.getContext('2d');
   let VW=0,VH=0,panels=[];
@@ -1809,92 +1809,92 @@ function startLounge(){
     if(X.trail.length>28)X.trail.length=28;
   }
 
-  /* ---- option 3: jagged angular robot centipede (facing +x) ---- */
-  const NSEG=9;
-  const COL={body:'#5a5a62',body2:'#484850',edge:'#a8a8b0',edge2:'#8a8a92',dark:'#2e2e34',eye:'#d0d0d8'};
+  /* ---- option 1: thin S-curve many-segment needle-leg centipede (facing +x), elongated ---- */
+  const NSEG=22; /* longer than ref silhouette */
+  const COL={body:'#5c5c64',body2:'#4a4a52',edge:'#b0b0b8',edge2:'#8e8e96',dark:'#2a2a30',eye:'#e8e8f0'};
   function drawPulse(g,x,y,t){
-    [[0,'rgba(160,160,168,.3)'],[.45,'rgba(120,120,128,.22)']].forEach(o=>{const tt=t-o[0];if(tt<=0||tt>1.3)return;
-      g.globalAlpha=Math.max(0,1-tt/1.3)*.4;g.strokeStyle=o[1];g.lineWidth=1.1;g.beginPath();g.arc(x,y,24+tt*36,0,Math.PI*2);g.stroke()});
+    [[0,'rgba(160,160,168,.28)'],[.45,'rgba(120,120,128,.2)']].forEach(o=>{const tt=t-o[0];if(tt<=0||tt>1.3)return;
+      g.globalAlpha=Math.max(0,1-tt/1.3)*.35;g.strokeStyle=o[1];g.lineWidth=1;g.beginPath();g.arc(x,y,22+tt*34,0,Math.PI*2);g.stroke()});
     g.globalAlpha=1}
-  function bladeLeg(g,sx,sy,side,phase,scale){
-    const swing=Math.sin(phase)*1.1*scale,lift=Math.max(0,Math.cos(phase))*0.7*scale;
-    const kx=sx-0.2+swing*.35,ky=sy+side*(2.1+lift);
-    const fx=sx-0.6+swing*1.1,fy=sy+side*(4.6+lift*.4);
-    g.strokeStyle=COL.edge2;g.lineWidth=.55;g.lineCap='round';g.lineJoin='round';
-    g.beginPath();g.moveTo(sx,sy);g.lineTo(kx,ky);g.lineTo(fx,fy);g.stroke();
-    /* blade tip */
-    g.fillStyle=COL.edge;g.beginPath();g.moveTo(fx,fy);g.lineTo(fx-.55,fy+side*.15);g.lineTo(fx+.15,fy+side*1.05);g.closePath();g.fill();
+  function needleLeg(g,sx,sy,side,phase,sc){
+    const swing=Math.sin(phase)*0.55*sc,lift=Math.max(0,Math.cos(phase))*0.35*sc;
+    const mx=sx+swing*.25,my=sy+side*(0.85+lift*.4);
+    const fx=sx+swing*.9,fy=sy+side*(2.35+lift*.25);
+    g.strokeStyle=COL.edge2;g.lineWidth=.32;g.lineCap='round';
+    g.beginPath();g.moveTo(sx,sy);g.lineTo(mx,my);g.lineTo(fx,fy);g.stroke();
+    g.strokeStyle=COL.edge;g.lineWidth=.22;g.beginPath();g.moveTo(fx,fy);g.lineTo(fx+side*0.05,fy+side*.55);g.stroke();
   }
   function drawCentipede(g,amp,lp,blink){
     g.lineCap='round';g.lineJoin='round';
-    /* segments from head(+x) to tail(-x) */
     const segs=[];
     for(let i=0;i<NSEG;i++){
       const t=i/(NSEG-1);
-      const x=3.2-i*1.55;
-      const y=Math.sin(lp*1.8+i*.55)*0.22*amp; /* calm undulation */
-      const sc=1-t*0.22;
-      segs.push({x,y,sc,i});
+      /* long thin chain along -x with calm S undulation */
+      const x=4.2-i*1.05;
+      const y=Math.sin(t*Math.PI*1.15+lp*1.4)*1.15*(.35+amp*.65)+Math.sin(lp*2.1+i*.4)*.12*amp;
+      const sc=1-t*0.28;
+      segs.push({x,y,sc,i,t});
     }
-    /* legs first (under body) */
+    /* many short needle legs under body (both sides, dense) */
     segs.forEach((s,i)=>{
-      if(i===0)return; /* head has larger fore-blades drawn with head */
-      const ph=lp*Math.PI*2+i*.7;
-      bladeLeg(g,s.x+.1,s.y,1,ph,s.sc*amp);
-      bladeLeg(g,s.x+.1,s.y,-1,ph+Math.PI,s.sc*amp);
+      if(i===0)return;
+      const ph=lp*Math.PI*2+i*.55;
+      needleLeg(g,s.x+.05,s.y,1,ph,s.sc*(.55+amp*.5));
+      needleLeg(g,s.x+.05,s.y,-1,ph+Math.PI,s.sc*(.55+amp*.5));
+      if(i%2===0){ /* extra density */
+        needleLeg(g,s.x-.35,s.y,1,ph+.8,s.sc*(.45+amp*.4));
+        needleLeg(g,s.x-.35,s.y,-1,ph+Math.PI+.8,s.sc*(.45+amp*.4));
+      }
     });
-    /* armored plates */
+    /* thin cylindrical segments — draw rear→front */
     for(let i=segs.length-1;i>=1;i--){
-      const s=segs[i],w=1.05*s.sc,h=.95*s.sc;
+      const s=segs[i],nx=segs[i-1];
+      const rw=.42*s.sc,rh=.38*s.sc;
       g.fillStyle=i%2?COL.body:COL.body2;
-      g.beginPath();
-      g.moveTo(s.x+w,s.y-h*.55);g.lineTo(s.x+w*.35,s.y-h);g.lineTo(s.x-w,s.y-h*.5);
-      g.lineTo(s.x-w,s.y+h*.5);g.lineTo(s.x+w*.35,s.y+h);g.lineTo(s.x+w,s.y+h*.55);
-      g.closePath();g.fill();
-      g.strokeStyle=COL.edge2;g.lineWidth=.28;g.stroke();
-      /* dorsal spike */
-      g.fillStyle=COL.edge;g.beginPath();
-      g.moveTo(s.x-.1,s.y-h);g.lineTo(s.x+.35,s.y-h-1.15*s.sc);g.lineTo(s.x+.55,s.y-h*.7);g.closePath();g.fill();
-      /* hinge dots */
-      g.fillStyle=COL.dark;g.beginPath();g.arc(s.x+w*.15,s.y,.18,0,Math.PI*2);g.fill();
+      g.beginPath();g.ellipse(s.x,s.y,rw,rh,0,0,Math.PI*2);g.fill();
+      g.strokeStyle=COL.edge2;g.lineWidth=.2;g.stroke();
+      /* tiny segment ring highlight */
+      g.strokeStyle='rgba(180,180,188,.35)';g.lineWidth=.15;
+      g.beginPath();g.ellipse(s.x+.12,s.y,rw*.55,rh*.7,0,0,Math.PI*2);g.stroke();
+      /* soft connector toward next */
+      g.strokeStyle=COL.dark;g.lineWidth=.35*s.sc;
+      g.beginPath();g.moveTo(s.x+rw*.6,s.y);g.lineTo(nx.x-rw*.4,nx.y);g.stroke();
     }
-    /* head — triangular angular with blade antennae + beak */
+    /* head — sharp needle snout + long swept antennae + triangular eye */
     const H=segs[0];
     g.fillStyle=COL.body;
     g.beginPath();
-    g.moveTo(H.x+2.6,H.y);           /* beak tip */
-    g.lineTo(H.x+1.1,H.y-1.35);
-    g.lineTo(H.x-.2,H.y-1.55);
-    g.lineTo(H.x-1.1,H.y-.6);
-    g.lineTo(H.x-1.1,H.y+.6);
-    g.lineTo(H.x-.2,H.y+1.55);
-    g.lineTo(H.x+1.1,H.y+1.35);
+    g.moveTo(H.x+2.8,H.y);          /* needle tip */
+    g.lineTo(H.x+1.0,H.y-.55);
+    g.lineTo(H.x-.15,H.y-.7);
+    g.lineTo(H.x-.85,H.y-.25);
+    g.lineTo(H.x-.85,H.y+.25);
+    g.lineTo(H.x-.15,H.y+.7);
+    g.lineTo(H.x+1.0,H.y+.55);
     g.closePath();g.fill();
-    g.strokeStyle=COL.edge;g.lineWidth=.35;g.stroke();
-    /* mandible notch */
-    g.fillStyle=COL.dark;g.beginPath();g.moveTo(H.x+2.6,H.y);g.lineTo(H.x+1.7,H.y-.35);g.lineTo(H.x+1.7,H.y+.35);g.closePath();g.fill();
-    /* slit eye */
+    g.strokeStyle=COL.edge;g.lineWidth=.28;g.stroke();
+    /* triangular eye */
     if(!blink){
-      g.fillStyle=COL.eye;g.fillRect(H.x+.55,H.y-.22,1.15,.38);
-      g.fillStyle=COL.dark;g.fillRect(H.x+.7,H.y-.1,.75,.14);
+      g.fillStyle=COL.eye;
+      g.beginPath();g.moveTo(H.x+.55,H.y-.28);g.lineTo(H.x+1.45,H.y);g.lineTo(H.x+.55,H.y+.28);g.closePath();g.fill();
+      g.fillStyle=COL.dark;g.beginPath();g.moveTo(H.x+.7,H.y-.1);g.lineTo(H.x+1.15,H.y);g.lineTo(H.x+.7,H.y+.1);g.closePath();g.fill();
     }else{
-      g.strokeStyle=COL.edge2;g.lineWidth=.25;g.beginPath();g.moveTo(H.x+.55,H.y);g.lineTo(H.x+1.7,H.y);g.stroke();
+      g.strokeStyle=COL.edge2;g.lineWidth=.2;g.beginPath();g.moveTo(H.x+.55,H.y);g.lineTo(H.x+1.4,H.y);g.stroke();
     }
-    /* blade antennae / horns sweeping back */
-    g.strokeStyle=COL.edge;g.lineWidth=.5;
-    g.beginPath();g.moveTo(H.x+.2,H.y-1.4);g.lineTo(H.x-1.2,H.y-2.6);g.lineTo(H.x-2.4,H.y-2.35);g.stroke();
-    g.beginPath();g.moveTo(H.x+.2,H.y+1.4);g.lineTo(H.x-1.2,H.y+2.6);g.lineTo(H.x-2.4,H.y+2.35);g.stroke();
+    /* long thin antennae swept back/up */
+    g.strokeStyle=COL.edge;g.lineWidth=.38;g.lineCap='round';
+    g.beginPath();g.moveTo(H.x+.3,H.y-.55);g.quadraticCurveTo(H.x-1.2,H.y-2.4,H.x-3.6,H.y-3.1);g.stroke();
+    g.beginPath();g.moveTo(H.x+.3,H.y+.55);g.quadraticCurveTo(H.x-1.2,H.y+2.4,H.x-3.6,H.y+3.1);g.stroke();
     g.fillStyle=COL.edge2;
-    g.beginPath();g.moveTo(H.x-2.4,H.y-2.35);g.lineTo(H.x-2.9,H.y-2.55);g.lineTo(H.x-2.35,H.y-1.95);g.closePath();g.fill();
-    g.beginPath();g.moveTo(H.x-2.4,H.y+2.35);g.lineTo(H.x-2.9,H.y+2.55);g.lineTo(H.x-2.35,H.y+1.95);g.closePath();g.fill();
-    /* oversized fore blade-legs */
-    bladeLeg(g,H.x+.4,H.y,1,lp*Math.PI*2,.95+amp*.4);
-    bladeLeg(g,H.x+.4,H.y,-1,lp*Math.PI*2+Math.PI,.95+amp*.4);
-    /* tail tip spikes */
+    g.beginPath();g.arc(H.x-3.6,H.y-3.1,.22,0,Math.PI*2);g.fill();
+    g.beginPath();g.arc(H.x-3.6,H.y+3.1,.22,0,Math.PI*2);g.fill();
+    /* tiny fore needle legs */
+    needleLeg(g,H.x+.6,H.y,1,lp*Math.PI*2,.7);
+    needleLeg(g,H.x+.6,H.y,-1,lp*Math.PI*2+Math.PI,.7);
+    /* taper tip at tail */
     const T=segs[segs.length-1];
-    g.fillStyle=COL.edge;
-    g.beginPath();g.moveTo(T.x-T.sc,T.y);g.lineTo(T.x-T.sc-1.6,T.y-.55);g.lineTo(T.x-T.sc-.4,T.y);g.closePath();g.fill();
-    g.beginPath();g.moveTo(T.x-T.sc,T.y);g.lineTo(T.x-T.sc-1.6,T.y+.55);g.lineTo(T.x-T.sc-.4,T.y);g.closePath();g.fill();
+    g.fillStyle=COL.edge2;
+    g.beginPath();g.moveTo(T.x-.2,T.y);g.lineTo(T.x-1.5,T.y-.25);g.lineTo(T.x-1.5,T.y+.25);g.closePath();g.fill();
   }
   function draw(still,tm){
     g.clearRect(0,0,cv.width,cv.height);if(!panels.length)return;
@@ -1903,11 +1903,11 @@ function startLounge(){
       g.strokeStyle='rgba(180,190,200,.32)';g.lineWidth=1;g.beginPath();g.moveTo(ax,ay);g.lineTo(lx,ly);g.stroke();
       g.fillStyle='rgba(160,160,168,.4)';g.beginPath();g.arc(ax,ay,2,0,Math.PI*2);g.fill()}
     if(S.pulse>=0)drawPulse(g,lx,ly,S.pulse);
-    g.fillStyle='rgba(0,0,0,.3)';g.beginPath();
-    if(g.ellipse)g.ellipse(lx,ly+PS*1.2,PS*7.5,PS*2.4,X.ang,0,Math.PI*2);else g.arc(lx,ly,PS*5,0,Math.PI*2);
+    g.fillStyle='rgba(0,0,0,.28)';g.beginPath();
+    if(g.ellipse)g.ellipse(lx,ly+PS*.9,PS*11.5,PS*2.0,X.ang,0,Math.PI*2);else g.arc(lx,ly,PS*6,0,Math.PI*2);
     g.fill();
-    const amp=still?0:X.amp,bob=still?0:Math.sin((tm||0)*2.6)*.05;
-    g.save();g.globalAlpha=.94;g.translate(lx,ly);g.rotate(X.ang);g.scale(PS,PS*(1+bob*.02));
+    const amp=still?0:X.amp,bob=still?0:Math.sin((tm||0)*2.4)*.04;
+    g.save();g.globalAlpha=.95;g.translate(lx,ly);g.rotate(X.ang);g.scale(PS*1.05,PS*(1+bob*.02));
     g.imageSmoothingEnabled=true;drawCentipede(g,amp||.35,X.lp,S.blink>0);
     g.restore();
   }
